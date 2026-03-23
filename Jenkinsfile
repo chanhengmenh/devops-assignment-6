@@ -3,6 +3,8 @@ pipeline {
 
     environment {
         SONAR_HOME = tool 'sonar'
+        IMAGE_NAME  = "devsecops-api"
+        IMAGE_TAG   = "latest"
     }
 
     stages {
@@ -38,6 +40,12 @@ pipeline {
         stage('Trivy: File System Scan') {
             steps {
                 sh 'trivy fs --format table -o trivy-fs-report.html .'
+            }
+        }
+
+        stage('Docker: Build Image') {
+            steps {
+                sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
             }
         }
 
