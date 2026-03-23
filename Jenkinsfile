@@ -48,6 +48,11 @@ pipeline {
                 sh 'docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .'
             }
         }
+        stage('Trivy: Image Scan') {
+            steps {
+                sh 'trivy image --format table -o trivy-image-report.html ${IMAGE_NAME}:${IMAGE_TAG}'
+            }
+        }
 
     }
 }
